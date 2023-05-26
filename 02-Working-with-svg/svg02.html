@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <svg id="svg" width="500" height="500">
+      <!-- circles challenge -->
+      <!-- <circle cx="250" cy="250" r="123" fill="#0ff" />
+      <circle cx="200" cy="200" r="23" fill="#000" />
+      <circle cx="300" cy="200" r="23" fill="#000" />
+      <circle cx="250" cy="300" r="43" fill="#555" /> -->
+    </svg>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      function makeRandomData(n) {
+        const array = [];
+        for (let i = 0; i < n; i += 1) {
+          array.push({ a: Math.random(), b: Math.random(), c: Math.random() });
+        }
+        return array;
+      }
+      const data = makeRandomData(25);
+
+      d3.select("#svg")
+        .style("border", "1px solid")
+        // .selectAll("circle")
+        .selectAll("ellipse")
+        .data(data)
+        .enter()
+        // .append("circle")
+        .append("ellipse")
+        // Set attributes for SVG circles based on data
+        .attr("cx", (d, i) => (i * 500) / data.length)
+        .attr("cy", (d) => d.a * 500)
+        // .attr("r", (d) => d.c * 75)
+        .attr("rx", (d) => d.b * 50)
+        .attr("ry", (d) => d.c * 50)
+        .attr("fill", (d) => (hsl = `hsl(${d.a * 360}, 100%, 50%)`))
+        .attr("opacity", () => 0.5)
+        .attr("stroke-width", (d) => 10 * d.b)
+        .attr("stroke", (d) => (hsl = `hsl(${d.b * 360}, 100%, 50%)`));
+    </script>
+  </body>
+</html>

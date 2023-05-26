@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      function generateArrayRandomPositiveIntegers(n, max) {
+        let result = [];
+        for (let i = 0; i < n; i++) {
+          result.push(Math.floor(Math.random() * max) + 1); // +1 to ensure it's always a positive integer
+        }
+        return result;
+      }
+
+      const data = generateArrayRandomPositiveIntegers(10, 10); // generate an array of 10 random positive integers up to 10
+
+      d3.select("body")
+        .selectAll("div")
+        .data(data)
+        .enter()
+        .append("div")
+        .text((d) => `$${d.toFixed(2)}`)
+        .style("padding", "1em")
+        // .style("background-color", "red")
+        .style("margin", "1px")
+        .style("width", (d) => `${(d / 10) * 100}%`) // set width based on data
+        .style("height", "3rem")
+        .style("border-radius", "3rem")
+        // .style("background-image", "linear-gradient(to left, #e66465, #9198e5)")
+        .style("color", "#fff")
+        .style("font-family", "Helvetica")
+        .style("font-size", (d) => `${d * 5}px`) // set font size based on data
+        .style("opacity", (d) => d / 10) // set opacity based on data
+        .style("background-color", (d) => `hsl(${(d / 10) * 360}, 100%, 50%)`); // set background color based on data
+    </script>
+  </body>
+</html>
