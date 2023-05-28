@@ -11,6 +11,14 @@
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
+      const countryColors = {
+        USA: "cornflowerblue",
+        Pakistan: "gold",
+        Italy: "green",
+        Brazil: "tomato",
+        Canada: "purple",
+      };
+
       d3.csv("cities.csv").then((data) => {
         d3.select("#svg")
           .style("border", "1px solid")
@@ -20,20 +28,25 @@
           .append("circle")
           .attr("cx", (d) => parseFloat(d.x) * 2 + 250)
           .attr("cy", (d) => parseFloat(d.y) * 2 + 250)
-          .attr("r", (d) => parseInt(d.population) * 0.00001)
+          // Calculate the radius as the square root of population
+          .attr("r", (d) => Math.sqrt(parseInt(d.population) * 0.00001))
           .attr("fill", `red`)
           .attr("opacity", 0.25)
-          .attr("fill", (d) => {
-            if (d.country === "USA") {
-              return "cornflowerblue";
-            } else if (d.country === "Pakistan") {
-              return "gold";
-            } else if (d.country === "Italy") {
-              return "green";
-            } else if (d.country === "Brazil") {
-              return "tomato";
-            }
-          });
+          // refactored below to use countryColors object
+          // .attr("fill", (d) => {
+          //   if (d.country === "USA") {
+          //     return "cornflowerblue";
+          //   } else if (d.country === "Pakistan") {
+          //     return "gold";
+          //   } else if (d.country === "Italy") {
+          //     return "green";
+          //   } else if (d.country === "Brazil") {
+          //     return "tomato";
+          //   } else if (d.country === "Canada") {
+          //     return "purple";
+          //   }
+          // });
+          .attr("fill", (d) => countryColors[d.country]);
       });
     </script>
   </body>
