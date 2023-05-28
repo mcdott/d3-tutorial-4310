@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <svg id="svg" width="800" height="500"></svg>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+      d3.csv("cities.csv").then((data) => {
+        const x_extent = d3.extent(data, (d) => parseFloat(d.x));
+        const xScale = d3.scaleLinear().domain(x_extent).range([100, 700]);
+        const y_extent = d3.extent(data, (d) => parseFloat(d.y));
+        const yScale = d3.scaleLinear().domain(y_extent).range([400, 100]);
+        const countries = Array.from(new Set(data.map((d) => d.country)));
+
+        const countryScale = d3
+          .scaleOrdinal()
+          .domain(countries)
+          .range(["cornflowerblue", "gold", "green", "tomato", "purple"]);
+
+        const pop_extent = d3.extent(data, (d) => parseInt(d.population));
+
+        const popScale = d3.scaleSqrt().domain(pop_extent).range([10, 100]);
+
+        d3.select("#svg")
+          .style("border", "2px solid")
+          .selectAll("circle")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr("cx", (d) => xScale(d.x))
+          .attr("cy", (d) => parseFloat(d.y) * 2 + 250)
+          .attr("r", (d) => popScale(d.population))
+          .attr("fill", `red`)
+          .attr("opacity", 0.25)
+          .attr("fill", (d) => countryScale(d.country));
+      });
+    </script>
+  </body>
+</html>
