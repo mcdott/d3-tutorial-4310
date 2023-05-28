@@ -12,25 +12,20 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script>
       d3.csv("cities.csv").then((data) => {
-        const minX = d3.min(data, (d) => parseFloat(d.x));
-        const maxX = d3.max(data, (d) => parseFloat(d.x));
-        const xScale = d3.scaleLinear().domain([minX, maxX]).range([100, 700]);
-        const minY = d3.min(data, (d) => parseFloat(d.y));
-        const maxY = d3.max(data, (d) => parseFloat(d.y));
-        const yScale = d3.scaleLinear().domain([minY, maxY]).range([400, 100]);
+        const x_extent = d3.extent(data, (d) => parseFloat(d.x));
+        const xScale = d3.scaleLinear().domain(x_extent).range([100, 700]);
+        const y_extent = d3.extent(data, (d) => parseFloat(d.y));
+        const yScale = d3.scaleLinear().domain(y_extent).range([400, 100]);
+        const countries = Array.from(new Set(data.map((d) => d.country)));
 
         const countryScale = d3
           .scaleOrdinal()
-          .domain(["USA", "Pakistan", "Italy", "Brazil", "Canada"])
+          .domain(countries)
           .range(["cornflowerblue", "gold", "green", "tomato", "purple"]);
 
-        const popMin = d3.min(data, (d) => parseInt(d.population));
-        const popMax = d3.max(data, (d) => parseInt(d.population));
+        const pop_extent = d3.extent(data, (d) => parseInt(d.population));
 
-        const popScale = d3
-          .scaleSqrt()
-          .domain([popMin, popMax])
-          .range([10, 100]);
+        const popScale = d3.scaleSqrt().domain(pop_extent).range([10, 100]);
 
         d3.select("#svg")
           .style("border", "2px solid")
